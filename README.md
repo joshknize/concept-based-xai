@@ -76,10 +76,9 @@ from 0.9 to 0.8 cut 77 concepts to 24, but 7 of the 24 still referred to a
 legend or key. Fine for prediction, bad for explanation — a local explanation
 padded with four near-identical `axis` concepts explains less, not more.
 
-Overlap is only half of it. The concepts are also rarely discriminative. Below
-is Table 1 from the paper: everything GPT-3.5 Turbo Instruct returned when
-prompted for the features that distinguish a *surface* chart, a class defined
-by its complex three-dimensional geometry.
+Additionally, the concepts are rarely discriminative. Below
+is Table 1 from the paper which includes GPT-3.5 Turbo Instruct's concepts
+for a *surface* chart.
 
 | Surface chart concepts |
 | --- |
@@ -94,16 +93,12 @@ by its complex three-dimensional geometry.
 | horizontal and vertical axes with label… |
 | x and y axes |
 
-Reproduced as printed, including the two truncated entries. Not one of these
-concepts is specific to a surface chart — every one of them applies equally to
-an area, bar, line, scatter, box, or interval chart. Nothing here resembles
-`a three-dimensional axis` or `a rugged three-dimensional shape`. This set was
-generated with a modified prompt asking for features that identify a surface
-chart *rather than other chart types*, which produced no better result than the
-framework's default prompt; all other results in the paper use the default.
-
-Every concept set we generated, along with the filter parameters and raw LLM
-output behind each one, is in [`concept-sets/`](concept-sets).
+None of these concepts is specific to a surface chart, and each applies equally to
+an area, bar, line, scatter, box, or interval chart. We argue that
+`a three-dimensional axis` or `a rugged three-dimensional shape` would be appropriate 
+concepts. This set was generated with a modified prompt asking for features that 
+identify a surface chart *rather than other chart types*, which produced no better result 
+than the framework's default prompt.
 
 ![Local explanation for a single chart image](figures/cbm-local-explanation.png)
 

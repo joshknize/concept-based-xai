@@ -1,21 +1,8 @@
 """Synthetic chart generator with concept ground truth.
 
-Renders matplotlib chart images across five classes (scatter, line, vertical
-bar, horizontal bar, pie) with randomized styling, and emits a `labels.csv`
-giving each image a chart-class label plus a 0/1 label for every concept in
-`concepts.txt`.
-
-The point is evaluation, not training data. LF-CBM concept predictions are
-normally judged qualitatively or by user study; this dataset gives them a
-ground truth to be scored against. Concept labels are assigned by the rules in
-CONCEPT_RULES, which read the styling metadata each chart maker returns -- so a
-concept like "colorful points" is true for exactly those scatter charts whose
-random style actually drew colorful points, rather than being assumed from the
-class alone.
-
 Usage:
     python generate_charts.py --config config/chart_gen_config.json
-    python generate_charts.py -n 5      # small smoke-test run
+    python generate_charts.py -n 5      # small test run
 
 Chart counts, styling ranges, and output directories are set per class in the
 JSON config. Generation is seeded, so a given config reproduces the same set.

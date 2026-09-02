@@ -9,14 +9,11 @@ inspectable without needing the full working repo.
 
 ## 1. Transformer backbones produce 3-D features
 
-Upstream assumes a CNN backbone: it strips the final FC layer and flattens
+Upstream assumes a CNN backbone and strips the final FC layer and flattens
 whatever comes out, which for a ResNet is `[B, C, 1, 1] -> [B, C]`. A ViT's
-`forward_features` returns `[B, seq_len, dim]` instead. Flattening that
-concatenates every patch token into one enormous vector, which then silently
-mismatches — or worse, doesn't mismatch — the projection layer.
-
-The fix is to branch on rank and take the CLS token, in `CBM_model.forward`
-and `standard_model.forward` in `cbm.py`:
+`forward_features` returns `[B, seq_len, dim]` instead. The fix is to branch 
+on rank and take the CLS token, in `CBM_model.forward` and `standard_model.forward` 
+in `cbm.py`:
 
 ```python
 def forward(self, x):
@@ -45,24 +42,9 @@ elif "occ" in backbone_name:
 ```
 
 The same 3-D assumption is baked into the activation-saving path used to build
-the concept layer, so that has to be handled in `utils.get_activation` too, or
-the concepts get learned against garbage features while training still appears
-to converge.
+the concept layer, so that has to be handled in `utils.get_activation`, too.
 
-## 2. Exporting concept predictions
-
-`forward` already returns `proj_c`, the normalized bottleneck activations, but
-nothing upstream persists them — evaluation only reports final classification
-accuracy. Collecting them per image (alongside class predictions, from a
-`shuffle=False` loader so the row order still matches the dataset's file list)
-is what makes the concept-level evaluation below possible.
-
-The ordering here is a genuine trap. `torchvision`'s `ImageFolder.samples`
-gives the canonical file order, but any shuffling in the eval loader breaks the
-correspondence between activation rows and filenames. The result isn't an
-error; it's a plausible-looking score computed against mismatched labels.
-
-## 3. Scoring concepts against a ground truth
+## 2. Scoring concepts against a ground truth
 
 [`concept_eval.py`](concept_eval.py) is the piece with no upstream equivalent.
 It treats each (image, concept) pair as an independent binary classification
@@ -82,9 +64,7 @@ print(sweep_thresholds(acts, concept_names, filenames, "labels.csv"))
 It scores the intersection of the model's concept set and the ground-truth
 concept set, and reports how much of each that covered. It also carries the
 no-information rate next to accuracy, because on a sparse label matrix
-accuracy is close to meaningless on its own — the paper's headline result is
-exactly that: 82.6% accuracy against an 82.2% no-information rate, at a
-threshold where the model has essentially stopped predicting concepts.
+accuracy is close to meaningless on its own.
 
 ## Attribution
 
