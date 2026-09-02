@@ -1,0 +1,143 @@
+{
+    "area": [
+        "a jagged edge or border on some geometry",
+        "a densely packed set of bars or spikes",
+        "vertically oriented rectangles",
+        "text or numbers along an axis",
+        "multi-colored",
+        "a legend referencing color",
+        "overlapping or adjacent colors",
+        "a curved boundary dividing different colors",
+        "an edge dividing two different colors",
+        "small text labels"
+    ],
+    "heatmap": [
+        "multi-colored", 
+        "alternating color scheme",
+        "a legend referencing color",
+        "a complex chart area with colors and shapes",
+        "color overlaying shapes",
+        "small text labels",
+        "an edge dividing two dfferent colors",
+        "a gradient of colors",
+        "a map-like layout",
+        "a legend matching a larger figure",
+        "vibrant colors"
+    ],
+    "horizontal_bar": [
+        "aligned horizontal rectangles",
+        "an edge dividing two dfferent colors",
+        "text labels",
+        "text or numbers along an axis",
+        "short texts or shapes at the end of rectangles",
+        "concatenated rectangles of different colors"
+    ],
+    "horizontal_interval": [
+        "small points",
+        "small points with horizontal whiskers",
+        "points spaced evenly apart along y-axis",
+        "a tall list of small text or points",
+        "points along a line"
+    ],
+    "line": [
+        "multiple curved or jagged lines",
+        "steep or sloped line",
+        "dashed line",
+        "differently colored lines",
+        "text along an axis",
+        "points along a line", 
+        "a single line with curvature"
+    ],
+    "manhattan": [
+        "densely packed scatter points",        
+        "small text labels",
+        "an edge dividing two dfferent colors",
+        "scatter points extending sparsely upwards",
+        "alternating colors",
+        "multi-colored",
+        "dense features aligned along x-direction",
+        "vibrant colors"
+    ],
+    "map": [
+        "black and white",
+        "irregular shapes",
+        "a map-like layout",
+        "several small, irregular shapes",
+        "a legend referencing colors",
+        "a large shape with an irregular border",
+        "a circlular edge",
+        "small points or labels",
+        "an edge dividing two dfferent colors"
+    ],
+    "pie": [
+        "text",
+        "a circular edge",
+        "an edge dividing two dfferent colors",
+        "small text labels",
+        "a large circle",
+        "a line within a circle",
+        "straight, short lines"
+    ],
+    "scatter": [
+        "text along an axis",
+        "small points", 
+        "small text labels",
+        "small shapes"
+    ],
+    "scatter-line": [
+        "small points",
+        "small shapes",
+        "text labels",
+        "two axes",
+        "points along a line",
+        "points next to a line",
+        "text along an axis",
+        "colorful points"
+    ],
+    "surface": [
+        "irregular shapes",
+        "a map-like layout",
+        "several small, irregular shapes",
+        "small points or labels",
+        "orange or red",
+        "a large shape with an irregular border",
+        "a splotchy or speckled pattern",
+        "different colors separated by an irregular edge",
+        "a legend referencing colors"
+    ],
+    "venn": [
+        "a boundary dividing different colors",
+        "a gradient of colors",
+        "an edge dividing two dfferent colors",
+        "small text labels",
+        "a curved boundary",
+        "vibrant colors",
+        "overlapping colors",
+        "overlapping cirlces"
+    ],
+    "vertical_bar": [
+        "aligned vertical rectangles",
+        "an edge dividing two dfferent colors",
+        "text labels",
+        "text or numbers along an axis",
+        "short texts or shapes at the end of rectangles",
+        "a rectangle filled with a pattern",
+        "concatenated rectangles of different colors"
+    ],
+    "vertical_box": [
+        "isolated rectangles divided by a line",
+        "rectangles with vertical whiskers",
+        "aligned vertical rectangles",
+        "text or numbers along an axis",
+        "multi-colored",
+        "densely packed rectangles"
+    ],
+    "vertical_interval": [
+        "small points",
+        "small points with vertical whiskers",
+        "points spaced evenly apart along x-axis",
+        "points along a line",
+        "small text labels",
+        "text or numbers along an axis"        
+    ]
+}

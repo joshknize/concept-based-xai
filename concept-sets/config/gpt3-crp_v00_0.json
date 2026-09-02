@@ -1,0 +1,14 @@
+{
+    "id": "gpt3-crp_v00_0",
+    "description": "gpt3_v00_0 + crp_v00_0",
+    "class_sim_cutoff": 0.85,
+    "other_sim_cutoff": 0.9,
+    "max_len": 50,
+    "print_prob": 1,
+    "dataset": "chartinfo",
+    "device": "cuda",
+    "important": true,
+    "superclass": false,
+    "around": true,
+    "other": "crp-informed-concepts.json"
+}

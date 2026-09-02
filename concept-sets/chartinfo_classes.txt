@@ -1,0 +1,15 @@
+area chart
+heatmap chart
+horizontal_bar chart
+horizontal_interval chart
+line chart
+manhattan chart
+map chart
+pie chart
+scatter chart
+scatter-line chart
+surface chart
+venn chart
+vertical_bar chart
+vertical_box chart
+vertical_interval chart

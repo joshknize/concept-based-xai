@@ -52,7 +52,7 @@ can't score well by memorizing the class and emitting its concept template.
 | Path | What it is |
 | --- | --- |
 | `generate_charts.py` | Generator, concept rules, and CSV writer |
-| `concepts.txt` | Concept vocabulary, one per line (CRP-informed set from the paper) |
+| `concepts.txt` | Concept vocabulary, one per line (copy of `crp_v01_0.txt` from [`../concept-sets/`](../concept-sets)) |
 | `config/chart_gen_config.json` | Per-class counts, styling ranges, output paths, seed |
 
 Sample output — one chart per class plus the `labels.csv` they produced — is in

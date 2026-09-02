@@ -3,38 +3,40 @@
 Josh Knize, Kenny Davila, Min Song
 
 Supplementary code and notes for our paper evaluating two concept-based
-explainability methods — **Concept Relevance Propagation** (CRP) and
-**Label-free Concept Bottleneck Models** (LF-CBM) — on chart image
+explainability methods, **Concept Relevance Propagation** (CRP) and
+**Label-free Concept Bottleneck Models** (LF-CBM), on chart image
 classification.
 
-Chart images are a hard case for these methods on purpose: few non-synthetic
-datasets, high visual similarity between classes, heavy class imbalance, and
-enormous heterogeneity within a class. We adapted both frameworks to the
-CHART-Info 2024 dataset and an OCC backbone, and found neither usable out of
-the box — a wide interpretability gap, entangled concepts, poor concept
+Chart images are a challenging domain due to few non-synthetic
+datasets, high visual similarity between classes, large class imbalance, and
+significant heterogeneity within a class. We adapted both frameworks to the
+CHART-Info 2024 dataset and a backbone from our previous work: Optimizing Chart
+Image Classification (OCC). We found that neither method is usable out of
+the box due to a wide interpretability gap, entangled concepts, poor concept
 generation, and poor concept prediction.
 
-This repository is a supplement, not a reproduction. It holds the pieces that
-are useful to read on their own: the synthetic evaluation dataset generator,
+This repository provides supplemental materials to the paper. It contains pieces that
+are useful to read on their own such as the synthetic evaluation dataset generator,
 the concept-prediction scoring code that the LF-CBM framework doesn't provide,
 and notes on the adaptations each framework needed.
 
 ## Contents
 
-| Path | What's there |
+| Path | Contents |
 | --- | --- |
 | [`synthetic-charts/`](synthetic-charts) | Seeded chart generator that emits per-image concept ground truth |
+| [`concept-sets/`](concept-sets) | Every concept set we generated, with the filter config that produced it |
 | [`lf-cbm-patches/`](lf-cbm-patches) | Concept-prediction scoring, plus notes on adapting LF-CBM to a ViT backbone |
 | [`examples/`](examples) | Sample generated charts and the `labels.csv` they produced |
 | [`figures/`](figures) | Figures from the paper |
 
-## The main contribution here
+## LF-CBM Concept Prediction
 
-LF-CBM labels each bottleneck neuron with a natural-language concept, but
-neither the framework nor the original paper checks whether the neuron labeled
-`a large circle` actually fires on images containing a large circle. Evaluation
-is classification accuracy plus a crowdsourced study — and a model can score
-well on both while its concepts mean nothing.
+An LF-CBM labels each neuron in its concept bottleneck layer (CBL) with a 
+natural-language concept, but neither the framework nor the original paper 
+checks whether the corresponding neurons actually fires on correct images. 
+The evaluation is a classification accuracy plus a crowdsourced study, but a 
+model can score well on both without truly learning concepts.
 
 We built a ground truth to test that directly. `generate_charts.py` renders
 charts with randomized styling and derives concept labels from the rendering
@@ -43,8 +45,8 @@ charts that were drawn with a colorful palette. `concept_eval.py` then scores
 the bottleneck against those labels, treating each (image, concept) pair as an
 independent binary problem.
 
-Our best classifier reached a **95.4% macro-F1** on chart classification — and
-this is how its concepts scored:
+Our best classifier reached a **95.4% macro-F1** on chart classification, reflecting
+state-of-the-art classification performance, but this is how its *concept* prediction scored:
 
 | Concept activation threshold | Recall % | Precision % | F1 % | Accuracy % |
 | --- | --- | --- | --- | --- |
@@ -56,16 +58,54 @@ this is how its concepts scored:
 | 2.5 | 15.4 | 36.0 | 18.5 | 82.6 |
 | 3.0 | 5.3 | 26.9 | 8.6 | 82.6 |
 
-Micro-averaged over all binary concept predictions. The accuracy column is a
-trap: the no-information rate is **82.2%**, so the highest accuracy rows are
-the ones where the model has all but stopped predicting concepts at all. F1
-never clears 46%.
+These scores are micro-averaged over all binary concept predictions. Note that the 
+accuracy column is misleading since the no-information rate is **82.2%**. The F1
+never clears 46%. This is consistent with the information-leakage results in the CBM 
+literature.
 
-A state-of-the-art classifier, then, whose explanations don't track the image.
-That's consistent with the information-leakage results in the CBM literature —
-the bottleneck is routing information the concept labels don't describe. It
-also means concept-model classification accuracy is not evidence that the
-explanations are sound, which is how it's often reported.
+## LF-CBM Concept Generation
+
+LF-CBM's explanation output format is genuinely useful. It offers a global concept-to-class 
+illustration and with per-image contributions:
+
+![Sankey diagram of concept weights flowing into class predictions](figures/cbm-sankey.png)
+
+The concepts flowing through them are the problem. GPT-generated concept sets
+came back with heavy semantic overlap: tightening the cosine-similarity filter
+from 0.9 to 0.8 cut 77 concepts to 24, but 7 of the 24 still referred to a
+legend or key. Fine for prediction, bad for explanation — a local explanation
+padded with four near-identical `axis` concepts explains less, not more.
+
+Overlap is only half of it. The concepts are also rarely discriminative. Below
+is Table 1 from the paper: everything GPT-3.5 Turbo Instruct returned when
+prompted for the features that distinguish a *surface* chart, a class defined
+by its complex three-dimensional geometry.
+
+| Surface chart concepts |
+| --- |
+| a grid or lines to assist with reading… |
+| a legend explaining the data |
+| a legend or key explaining the symbols |
+| a title describing the purpose of the chart |
+| a title for the chart |
+| data points plotted as symbols or markers |
+| data points plotted on the chart |
+| gridlines to aid in reading the data |
+| horizontal and vertical axes with label… |
+| x and y axes |
+
+Reproduced as printed, including the two truncated entries. Not one of these
+concepts is specific to a surface chart — every one of them applies equally to
+an area, bar, line, scatter, box, or interval chart. Nothing here resembles
+`a three-dimensional axis` or `a rugged three-dimensional shape`. This set was
+generated with a modified prompt asking for features that identify a surface
+chart *rather than other chart types*, which produced no better result than the
+framework's default prompt; all other results in the paper use the default.
+
+Every concept set we generated, along with the filter parameters and raw LLM
+output behind each one, is in [`concept-sets/`](concept-sets).
+
+![Local explanation for a single chart image](figures/cbm-local-explanation.png)
 
 ## Concept Relevance Propagation
 
@@ -78,40 +118,25 @@ flowing into that prediction.
 
 Three problems this surfaces, detailed in the paper:
 
-- **Layer selection.** Concepts live at different depths — a surface chart's
-  3-D axes are a shallow feature while its rugged geometry is a deep one — and
-  the framework gives no principled way to choose.
+- **Layer selection.** Concepts live at different depths. For example, a surface chart's
+  3-D axes are a shallow feature while its rugged geometry is a deep one. Capturing relevant
+  features across the entire depth of the model is very challenging.
 - **Entanglement.** The channel above holds at least two concepts (a circular
   edge, small text labels). Propagating backward to decompose it produced
   *more* entangled channels rather than cleaner primitives.
 - **Dispersion.** That channel is 2nd most relevant *globally* but only 3rd in
-  its own most-representative sample, at 1.9% — relevance is spread thin across
-  2048 neurons, so global concept rankings say little about any single decision.
+  its own most-representative sample, at 1.9%. This suggests that relevance is spread 
+  thin across 2048 neurons.
 
-Chart data widens the interpretability gap further. The most representative
+Chart data widens the interpretability gap further. For example, the most representative
 samples for a top horizontal-interval concept share a horizontal orientation,
-aligned lines, points with whiskers, and a black-and-white palette — naming the
-concept means picking one of those, and nothing in the output decides which.
+aligned lines, points with whiskers, and a black-and-white palette. Nothing in the CRP output
+allows us to determine which concept(s) are the meaningful ones.  
 
 ![Representative samples for a horizontal interval chart concept](figures/crp-horizontal-interval.png)
 
-CRP also has no contrastive interface: it shows what supported the predicted
+CRP also has no contrastive interface. It shows what supported the predicted
 class, never why the alternatives lost.
-
-## LF-CBM
-
-LF-CBM's explanation outputs are genuinely good — global concept-to-class flows
-and per-image contributions:
-
-![Sankey diagram of concept weights flowing into class predictions](figures/cbm-sankey.png)
-
-The concepts flowing through them are the problem. GPT-generated concept sets
-came back with heavy semantic overlap: tightening the cosine-similarity filter
-from 0.9 to 0.8 cut 77 concepts to 24, but 7 of the 24 still referred to a
-legend or key. Fine for prediction, bad for explanation — a local explanation
-padded with four near-identical `axis` concepts explains less, not more.
-
-![Local explanation for a single chart image](figures/cbm-local-explanation.png)
 
 ## Methods and data evaluated
 

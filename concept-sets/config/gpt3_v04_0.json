@@ -1,0 +1,14 @@
+{
+    "id": "gpt3_v04_0",
+    "description": "gpt3_v03_0 with .8 other cutoff",
+    "class_sim_cutoff": 0.85,
+    "other_sim_cutoff": 0.8,
+    "max_len": 30,
+    "print_prob": 1,
+    "dataset": "chartinfo",
+    "device": "cuda",
+    "important": true,
+    "superclass": false,
+    "around": true,
+    "other": ""
+}
