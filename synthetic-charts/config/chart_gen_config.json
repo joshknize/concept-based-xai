@@ -1,0 +1,50 @@
+{
+    "general": {
+        "seed": 42
+    },
+    "enabled_chart_types": ["scatter", "line", "bar_vertical", "bar_horizontal", "pie"],
+    "charts": {
+        "scatter": {
+            "n_charts": 40,
+            "output_dir": "output/synthetic_data/scatter",
+            "data": {
+                "n_points": {"min": 30, "max": 400},
+                "noise_scale": {"min": 0.1, "max": 1.5},
+                "patterns": ["linear", "quadratic", "exponential", "no_relationship",
+                             "clustered", "heteroscedastic", "multimodal"]
+            }
+        },
+        "line": {
+            "n_charts": 175,
+            "output_dir": "output/synthetic_data/line",
+            "data": {
+                "n_points": {"min": 20, "max": 200},
+                "noise_scale": {"min": 0.1, "max": 1.5},
+                "patterns": ["linear", "quadratic", "exponential", "multimodal"]
+            }
+        },
+        "bar_vertical": {
+            "n_charts": 125,
+            "output_dir": "output/synthetic_data/vertical_bar",
+            "data": {
+                "n_categories": {"min": 3, "max": 12},
+                "value_range": {"min": 0, "max": 100}
+            }
+        },
+        "bar_horizontal": {
+            "n_charts": 20,
+            "output_dir": "output/synthetic_data/horizontal_bar",
+            "data": {
+                "n_categories": {"min": 3, "max": 12},
+                "value_range": {"min": 0, "max": 100}
+            }
+        },
+        "pie": {
+            "n_charts": 10,
+            "output_dir": "output/synthetic_data/pie",
+            "data": {
+                "n_slices": {"min": 2, "max": 8}
+            }
+        }
+    }
+}

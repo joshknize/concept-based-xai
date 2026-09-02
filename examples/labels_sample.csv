@@ -1,0 +1,11 @@
+filename,chart_type,a boundary dividing different colors,a circular edge,a gradient of colors,a large circle,a large shape with an irregular border,a legend matching a larger figure,a legend referencing colors,a map-like layout,a single line with curvature,aligned horizontal rectangles,colorful points,stacked rectangles of different colors,dashed line,densely packed scatter points,different colors separated by an irregular edge,differently colored lines,multi-colored,multiple curved or jagged lines,overlapping cirlces,points next to a line,rectangles with vertical whiskers,scatter points extending sparsely upwards,short texts or shapes at the end of rectangles,small points or labels,small points with horizontal whiskers,text,text along an axis,two axes
+scatter_0000_heteroscedastic.png,scatter,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,1,0,1,1,1
+scatter_0001_quadratic.png,scatter,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,1,1
+line_0000_quadratic.png,line,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,1,0,0,0,1,0,1,1,1
+line_0001_exponential.png,line,0,1,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,1,0,1,1,1
+bar_vertical_0000.png,bar_vertical,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,1,1
+bar_vertical_0001.png,bar_vertical,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1
+bar_horizontal_0000.png,bar_horizontal,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,1,1
+bar_horizontal_0001.png,bar_horizontal,1,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,1,1
+pie_0000.png,pie,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,1,0,0
+pie_0001.png,pie,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0
